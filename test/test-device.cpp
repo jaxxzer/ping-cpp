@@ -11,18 +11,11 @@
 #include <termios.h> // Contains POSIX terminal control definitions
 #include <unistd.h> // write(), read(), close()
 
+#include "../src/message/ping-message-ping360.h"
+
+
 int main()
 {
-    // C library headers
-    #include <stdio.h>
-    #include <string.h>
-
-    // Linux headers
-    #include <fcntl.h> // Contains file controls like O_RDWR
-    #include <errno.h> // Error integer and strerror() function
-    #include <termios.h> // Contains POSIX terminal control definitions
-    #include <unistd.h> // write(), read(), close()
-
     // Open the serial port. Change device path as needed (currently set to an standard FTDI USB-UART cable type device)
     int serial_port = open("/dev/ttyUSB0", O_RDWR);
 
@@ -60,6 +53,8 @@ int main()
     tty.c_cc[VMIN] = 0;
 
     // Set in/out baud rate to be 9600
+    // cfsetispeed(&tty, B115200);
+    // cfsetospeed(&tty, B115200);
     cfsetispeed(&tty, B2000000);
     cfsetospeed(&tty, B2000000);
 
@@ -74,31 +69,18 @@ int main()
         printf("Error sending break");
     }
 
-    // Write to serial port
-    unsigned char msg[] = { 0x42,
-0x52,
-0xe,
-0x0,
-0x29,
-0xa,
-0x0,
-0x0,
-0x1,
-0x0,
-0x1,
-0x0,
-0x5,
-0x0,
-0x50,
-0x0,
-0xe8,
-0x3,
-0xc8,
-0x0,
-0x1,
-0x0,
-0xe0,
-0x2 };
+ping360_transducer message;
+message.set_mode(1);
+message.set_gain_setting(0);
+message.set_angle(0);
+message.set_transmit_duration(50);
+message.set_sample_period(80);
+message.set_transmit_frequency(740);
+message.set_number_of_samples(200);
+message.set_transmit(1);
+message.set_reserved(0);
+
+int angle = 0;
 
 // Allocate memory for read buffer, set size according to your needs
 char read_buf [256];
@@ -106,8 +88,11 @@ memset(&read_buf, '\0', sizeof(read_buf));
 
 write(serial_port, "U", 1);
 
-for (int i = 0; i < 40; i++) {
-    write(serial_port, msg, sizeof(msg));
+for (int i = 0; i < 400; i++) {
+    message.set_angle(i);
+    message.updateChecksum();
+    write(serial_port, (char*)message.msgData, message.msgDataLength());
+    //write(serial_port, msg, sizeof(msg));
 
     // Read bytes. The behaviour of read() (e.g. does it block?,
     // how long does it block for?) depends on the configuration
