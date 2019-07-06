@@ -12,6 +12,7 @@
 #include <unistd.h> // write(), read(), close()
 
 #include "../src/message/ping-message-ping360.h"
+#include "../src/message/ping-parser.h"
 
 
 int main()
@@ -88,6 +89,8 @@ memset(&read_buf, '\0', sizeof(read_buf));
 
 write(serial_port, "U", 1);
 
+PingParser parser(512);
+
 for (int i = 0; i < 400; i++) {
     message.set_angle(i);
     message.updateChecksum();
@@ -98,6 +101,8 @@ for (int i = 0; i < 400; i++) {
     // how long does it block for?) depends on the configuration
     // settings above, specifically VMIN and VTIME
     int num_bytes = 0;
+    parser.reset();
+    PingParser::ParseState state;
     while (num_bytes < 224) {
         // n is the number of bytes read. n may be 0 if no bytes were received, and can also be -1 to signal an error.
         int n = read(serial_port, &read_buf, sizeof(read_buf));
@@ -106,6 +111,25 @@ for (int i = 0; i < 400; i++) {
             num_bytes = 224;
         } else {
             num_bytes += n;
+            for (int i = 0; i < n; i++) {
+                state = parser.parseByte(read_buf[i]);
+                switch (state) {
+                    case PingParser::NEW_MESSAGE:
+                    if ((Ping360Id)parser.rxMessage.message_id() == Ping360Id::DEVICE_DATA) {
+                        ping360_device_data response(parser.rxMessage);
+                        printf("\ngot new message:\n");
+                        for (int j = 0; j < response.msgDataLength(); j++) {
+                            printf("%d,", response.msgData[j]);
+                        }
+                    }
+                    break;
+                    case PingParser::ERROR:
+                    printf("\n\n\ngot error\n\n\n");
+                    break;
+                    default:
+                    break;
+                }
+            }
         }
     }
 
