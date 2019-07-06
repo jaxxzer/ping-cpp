@@ -35,6 +35,8 @@ int main()
         printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
     }
 
+
+
     tty.c_cflag &= ~PARENB; // Clear parity bit, disabling parity (most common)
     tty.c_cflag &= ~CSTOPB; // Clear stop field, only one stop bit used in communication (most common)
     tty.c_cflag |= CS8; // 8 bits per byte (most common)
@@ -58,12 +60,18 @@ int main()
     tty.c_cc[VMIN] = 0;
 
     // Set in/out baud rate to be 9600
-    cfsetispeed(&tty, B115200);
-    cfsetospeed(&tty, B115200);
+    cfsetispeed(&tty, B2000000);
+    cfsetospeed(&tty, B2000000);
 
     // Save tty settings, also checking for error
     if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
         printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
+    }
+
+    int breakCode = tcsendbreak(serial_port, 0);
+
+    if (breakCode != 0) {
+        printf("Error sending break");
     }
 
     // Write to serial port
@@ -96,6 +104,8 @@ int main()
 char read_buf [256];
 memset(&read_buf, '\0', sizeof(read_buf));
 
+write(serial_port, "U", 1);
+
 for (int i = 0; i < 40; i++) {
     write(serial_port, msg, sizeof(msg));
 
@@ -107,7 +117,7 @@ for (int i = 0; i < 40; i++) {
         // n is the number of bytes read. n may be 0 if no bytes were received, and can also be -1 to signal an error.
         int n = read(serial_port, &read_buf, sizeof(read_buf));
         if (num_bytes < 0) {
-            printf("Error reading: %s", strerror(errno));
+            printf("Error reading: %s\n", strerror(errno));
             num_bytes = 224;
         } else {
             num_bytes += n;
