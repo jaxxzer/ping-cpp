@@ -15,8 +15,14 @@
 
 PingPortLinux::PingPortLinux(const char* filename)
 {
-    _handle = std::fopen(filename, "a+");
+    _handle = std::fopen(filename, "r+");
     setBaudrate(B115200);
+}
+
+PingPortLinux::~PingPortLinux() {
+    if (_handle) {
+        std::fclose(_handle);
+    }
 }
 
 int PingPortLinux::read(char* data, int nBytes)
@@ -81,7 +87,5 @@ bool PingPortLinux::setBaudrate(int baudrate)
         return false;
     }
 
-    sendBreak(0);
-    write("U", 1);
     return true;
 }

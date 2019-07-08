@@ -86,5 +86,4 @@ public:
 private:
     PingPort& _port;
     PingParser _parser;
-    uint8_t _reserved;
 };
