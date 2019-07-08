@@ -25,11 +25,9 @@ int main()
     memset(&tty, 0, sizeof tty);
 
     // Read in existing settings, and handle any error
-    if(tcgetattr(serial_port, &tty) != 0) {
+    if (tcgetattr(serial_port, &tty) != 0) {
         printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
     }
-
-
 
     tty.c_cflag &= ~PARENB; // Clear parity bit, disabling parity (most common)
     tty.c_cflag &= ~CSTOPB; // Clear stop field, only one stop bit used in communication (most common)
@@ -53,7 +51,7 @@ int main()
     tty.c_cc[VTIME] = 42;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
     tty.c_cc[VMIN] = 0;
 
-    // Set in/out baud rate to be 9600
+    // Set in/out baud rate
     // cfsetispeed(&tty, B115200);
     // cfsetospeed(&tty, B115200);
     cfsetispeed(&tty, B2000000);
@@ -115,7 +113,7 @@ for (int i = 0; i < 400; i++) {
                 state = parser.parseByte(read_buf[i]);
                 switch (state) {
                     case PingParser::NEW_MESSAGE:
-                    if ((Ping360Id)parser.rxMessage.message_id() == Ping360Id::DEVICE_DATA) {
+                    if (parser.rxMessage.message_id() == Ping360Id::DEVICE_DATA) {
                         ping360_device_data response(parser.rxMessage);
                         printf("\ngot new message:\n");
                         for (int j = 0; j < response.msgDataLength(); j++) {
