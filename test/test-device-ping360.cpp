@@ -28,6 +28,48 @@ int main()
     //     msg->version_minor(),
     //     msg->version_major());
 
+
+    uint16_t requestId = CommonId::PROTOCOL_VERSION;
+
+    common_general_request req;
+    req.set_requested_id(requestId);
+    req.updateChecksum();
+
+    printf("request @ 115200\n");
+    device.write((char*)req.msgData, req.msgDataLength());
+    if (!device.waitMessage(requestId, 500)) {
+        printf("no reply\n");
+    }
+
+    port.setBaudrate(B9600);
+    port.sendBreak(0);
+    port.write("U", 1);
+
+    printf("request @ 9600\n");
+    device.write((char*)req.msgData, req.msgDataLength());
+    if (!device.waitMessage(requestId, 500)) {
+        printf("no reply\n");
+    }
+
+
+    port.setBaudrate(B115200);
+    port.sendBreak(0);
+    port.write("U", 1);
+
+    printf("request @ 115200\n");
+    device.write((char*)req.msgData, req.msgDataLength());
+    if (!device.waitMessage(requestId, 500)) {
+        printf("no reply\n");
+    }
+
+    printf("request @ 115200\n");
+    device.write((char*)req.msgData, req.msgDataLength());
+    if (!device.waitMessage(requestId, 500)) {
+        printf("no reply\n");
+    }
+
+    return 0;
+
     ping360_transducer control;
     control.set_gain_setting(0);
     control.set_mode(1);
