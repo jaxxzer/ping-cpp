@@ -2,6 +2,7 @@
 
 #include <inttypes.h>
 #include "ping-message.h"
+#include <cstdio>
 
 class PingParser
 {
@@ -46,6 +47,7 @@ public:
 
     ParseState parseByte(const uint8_t b)
     {
+        //printf("byte: %d state: %d\n", b, state_);
         switch(state_) {
         case WAIT_START:
             rxCount_ = 0;

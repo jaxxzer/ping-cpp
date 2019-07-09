@@ -7,7 +7,8 @@ ping_message* PingDevice::read()
 {
     char b;
     int result = _port.read(&b, 1);
-    if (result != -1) {
+    //printf("read byte %d with result %d\n", b, result);
+    if (result > 0) {
         if(_parser.parseByte((char)b) == PingParser::NEW_MESSAGE) {
             return &_parser.rxMessage;
         }
@@ -24,6 +25,7 @@ ping_message* PingDevice::waitMessage(uint16_t id, int timeout_ms)
 {
     int tstart = time_ms();
     while (time_ms() < tstart + timeout_ms) {
+        //printf("time %d\n", time_ms());
         ping_message* pmsg = read();
         
         if (!pmsg) {
@@ -33,11 +35,7 @@ ping_message* PingDevice::waitMessage(uint16_t id, int timeout_ms)
         handleMessage(pmsg);
 
         if (pmsg->message_id() == CommonId::NACK) {
-            common_nack nack(*pmsg);
-
-            if (nack.nacked_id() == id) {
-                return nullptr;
-            }
+            return nullptr;
         }
 
         if (pmsg->message_id() == id) {

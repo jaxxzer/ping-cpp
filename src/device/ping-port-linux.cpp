@@ -15,7 +15,8 @@
 
 PingPortLinux::PingPortLinux(const char* filename)
 {
-    _handle = std::fopen(filename, "r+");
+    strcpy(_filename, filename);
+    _handle = std::fopen(_filename, "a+");
     setBaudrate(B115200);
 }
 
@@ -27,7 +28,13 @@ PingPortLinux::~PingPortLinux() {
 
 int PingPortLinux::read(char* data, int nBytes)
 {
-    return std::fread(data, 1, nBytes, _handle);
+    int result = std::fread(data, 1, nBytes, _handle);
+
+    if (result == 0) {
+        std::fclose(_handle);
+        _handle = std::fopen(_filename, "a+");
+    }
+    return result;
 }
 
 int PingPortLinux::write(const char* data, int nBytes)
@@ -59,18 +66,18 @@ bool PingPortLinux::setBaudrate(int baudrate)
     tty.c_cflag &= ~CRTSCTS; // Disable RTS/CTS hardware flow control (most common)
     tty.c_cflag |= CREAD | CLOCAL; // Turn on READ & ignore ctrl lines (CLOCAL = 1)
 
-    tty.c_lflag &= ~ICANON;
-    tty.c_lflag &= ~ECHO; // Disable echo
-    tty.c_lflag &= ~ECHOE; // Disable erasure
-    tty.c_lflag &= ~ECHONL; // Disable new-line echo
-    tty.c_lflag &= ~ISIG; // Disable interpretation of INTR, QUIT and SUSP
-    tty.c_iflag &= ~(IXON | IXOFF | IXANY); // Turn off s/w flow ctrl
-    tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL); // Disable any special handling of received bytes
 
     tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
     tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
     // tty.c_oflag &= ~OXTABS; // Prevent conversion of tabs to spaces (NOT PRESENT ON LINUX)
     // tty.c_oflag &= ~ONOEOT; // Prevent removal of C-d chars (0x004) in output (NOT PRESENT ON LINUX)
+
+    tty.c_lflag  = 0;
+    tty.c_iflag  = 0;
+    //tty.c_iflag &= (IGNBRK | BRKINT | IGNPAR | PARMRK | INPCK | ISTRIP | INLCR | IGN CR | ICRNL | IUCLC | IXON | IXANY | IXOFF | IMAXBEL | IUTF8);
+    tty.c_iflag &= (IGNBRK | IGNPAR | INPCK);
+    //tty.c_iflag &= IGNBRK | IGNPAR | IGNCR | IXANY;
+    
 
     tty.c_cc[VTIME] = 1;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
     tty.c_cc[VMIN] = 0;

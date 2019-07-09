@@ -15,6 +15,6 @@ public:
     bool setBaudrate(int baudrate);
 
 private:
-
+    char _filename[256];
     std::FILE* _handle;
 };
