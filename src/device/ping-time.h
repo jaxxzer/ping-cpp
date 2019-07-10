@@ -1,3 +1,7 @@
 #pragma once
 
-int time_ms();
+namespace PingTime {
+    int time_ms();
+
+    void microsecondDelay(unsigned int microseconds);
+}

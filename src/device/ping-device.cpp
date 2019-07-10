@@ -23,8 +23,8 @@ int PingDevice::write(const char* data, int nBytes)
 
 ping_message* PingDevice::waitMessage(uint16_t id, int timeout_ms)
 {
-    int tstart = time_ms();
-    while (time_ms() < tstart + timeout_ms) {
+    int tstart = PingTime::time_ms();
+    while (PingTime::time_ms() < tstart + timeout_ms) {
         //printf("time %d\n", time_ms());
         ping_message* pmsg = read();
         

@@ -39,7 +39,9 @@ int PingPortLinux::read(char* data, int nBytes)
 
 int PingPortLinux::write(const char* data, int nBytes)
 {
-    return std::fwrite(data, 1, nBytes, _handle);
+    int bytes = std::fwrite(data, 1, nBytes, _handle);
+    std::fflush(_handle);
+    return bytes;
 }
 
 void PingPortLinux::sendBreak(int milliseconds)

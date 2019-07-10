@@ -1,7 +1,8 @@
 #include "ping-time.h"
 #include <chrono>
+#include <unistd.h>
 
-int time_ms()
+int PingTime::time_ms()
 {
     // std::chrono::time_point
     auto now = std::chrono::high_resolution_clock::now();
@@ -11,4 +12,9 @@ int time_ms()
     auto duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
 
     return duration_ms.count();
+}
+
+void PingTime::microsecondDelay(unsigned int microseconds)
+{
+    usleep(microseconds);
 }

@@ -43,7 +43,9 @@ int main()
 
     port.setBaudrate(B9600);
     port.sendBreak(0);
+    //PingTime::microsecondDelay(11000);
     port.write("U", 1);
+    PingTime::microsecondDelay(11000);
 
     printf("request @ 9600\n");
     device.write((char*)req.msgData, req.msgDataLength());
@@ -54,7 +56,9 @@ int main()
 
     port.setBaudrate(B115200);
     port.sendBreak(0);
+    //PingTime::microsecondDelay(11000);
     port.write("U", 1);
+    PingTime::microsecondDelay(11000);
 
     printf("request @ 115200\n");
     device.write((char*)req.msgData, req.msgDataLength());
