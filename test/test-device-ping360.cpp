@@ -43,7 +43,7 @@ int main()
 
     port.setBaudrate(B9600);
     port.sendBreak(0);
-    //PingTime::microsecondDelay(11000);
+    PingTime::microsecondDelay(11000);
     port.write("U", 1);
     PingTime::microsecondDelay(11000);
 
@@ -56,7 +56,7 @@ int main()
 
     port.setBaudrate(B115200);
     port.sendBreak(0);
-    //PingTime::microsecondDelay(11000);
+    PingTime::microsecondDelay(11000);
     port.write("U", 1);
     PingTime::microsecondDelay(11000);
 
