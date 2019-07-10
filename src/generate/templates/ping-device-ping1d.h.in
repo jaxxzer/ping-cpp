@@ -17,11 +17,13 @@ public:
 
 {% endfor %}
 
+{% set propnames=[] %}
 {% set proplist=[] %}
 {% for msg in messages["get"] %}
-{% for field in msg.payload %}
-{% if field.name not in proplist %}
-{% proplist.append(field.name) %}
+{% for field in messages["get"][msg].payload %}
+{% if field.name not in propnames %}
+{{ '' if propnames.append(field.name) -}}
+{{ '' if proplist.append(field) -}}
 {% endif %}
 {% endfor %}
 {% endfor %}
@@ -30,16 +32,16 @@ public:
     /**
      * Return the latest value received
      */
-{% if generator.is_vector(proplist[field].type) %}
-{% if proplist[field].vector.sizetype %}
-    {{generator.get_type_string(proplist[field].vector.sizetype)}} {{proplist[field].name}}_length() { return _{{proplist[field].name}}_length; }
+{% if generator.is_vector(field.type) %}
+{% if field.vector.sizetype %}
+    {{generator.get_type_string(field.vector.sizetype)}} {{field.name}}_length() { return _{{field.name}}_length; }
     /**
      * Return the latest value received
      */
-    {{generator.get_type_string(proplist[field].vector.datatype)}}* {{proplist[field].name}}() { return _{{proplist[field].name}}; }
+    {{generator.get_type_string(field.vector.datatype)}}* {{field.name}}() { return _{{field.name}}; }
 {% endif %}
 {% else %}
-    {{generator.get_type_string(proplist[field].type)}} {{proplist[field].name}}() { return _{{proplist[field].name}}; }
+    {{generator.get_type_string(field.type)}} {{field.name}}() { return _{{field.name}}; }
 {% endif %}
 
 {% endfor %}
@@ -52,14 +54,14 @@ private:
     PingParser _parser;
 
 {% for field in proplist %}
-    // {{proplist[field].description}}
-{% if generator.is_vector(proplist[field].type) %}
-{% if proplist[field].vector.sizetype %}
-    {{generator.get_type_string(proplist[field].vector.sizetype)}} _{{proplist[field].name}}_length = 0;
+    // {{field.description}}
+{% if generator.is_vector(field.type) %}
+{% if field.vector.sizetype %}
+    {{generator.get_type_string(field.vector.sizetype)}} _{{field.name}}_length = 0;
 {% endif %}
-    {{generator.get_type_string(proplist[field].vector.datatype)}}* _{{proplist[field].name}} = 0;
+    {{generator.get_type_string(field.vector.datatype)}}* _{{field.name}} = 0;
 {% else %}
-    {{generator.get_type_string(proplist[field].type)}} _{{proplist[field].name}} = 0;
+    {{generator.get_type_string(field.type)}} _{{field.name}} = 0;
 {% endif %}
 
 {% endfor %}
