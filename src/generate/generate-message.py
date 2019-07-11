@@ -38,7 +38,7 @@ for definition in definitions:
 
 # Create message definitions for each sensor
 for definition in definitions:
-    f = open("%s/ping-message-%s.h" % args.output_directory, definition, "w")
+    f = open("%s/ping-message-%s.h" % (args.output_directory, definition), "w")
     f.write(g.generate(mergedJson["global"][definition], templateFile, {"definition": definition}))
     f.close()
 
