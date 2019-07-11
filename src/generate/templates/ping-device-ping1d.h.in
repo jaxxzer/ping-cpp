@@ -1,6 +1,18 @@
-class Ping1d : public PingDevice
+class Ping1D : public PingDevice
 {
 public:
+    /**
+     *  @brief Constructor
+     *
+     *  @param ser: The device I/O
+     */
+    Ping1D(Stream& ser);
+
+    /**
+     * @brief Destructor
+     */
+    ~Ping1D();
+
 {% for msg in messages["set"] %}
     /**
      * @brief {{messages["set"][msg].description}}
@@ -52,6 +64,13 @@ private:
 
     // For decoding PingMessages from the device
     PingParser _parser;
+
+    /**
+     *  @brief Handle an incoming message from the device. Internal values are updated according to the device data.
+     *
+     *  @param pmsg: The message received from the device
+     */
+    void handleMessage(ping_message* pmsg) override;
 
 {% for field in proplist %}
     // {{field.description}}

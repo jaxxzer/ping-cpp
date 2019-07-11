@@ -67,12 +67,7 @@ public:
      */
     ping_message* request(uint16_t id, int timeout_ms = 500);
 
-    /**
-     *  @brief Handle an incoming message from the device. Internal values are updated according to the device data.
-     *
-     *  @param pmsg: The message received from the device
-     */
-    void handleMessage(ping_message* pmsg);
+
     
     uint8_t device_type;
     uint8_t device_revision;
@@ -82,6 +77,14 @@ public:
     uint8_t version_major;
     uint8_t version_minor;
     uint8_t version_patch;
+
+protected:
+    /**
+     *  @brief Handle an incoming message from the device. Internal values are updated according to the device data.
+     *
+     *  @param pmsg: The message received from the device
+     */
+    virtual void handleMessage(ping_message* pmsg);
 
 private:
     PingPort& _port;
