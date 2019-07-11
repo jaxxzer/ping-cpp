@@ -1,4 +1,8 @@
-class Ping1D : public PingDevice
+#pragma once
+
+#include "ping-device.h"
+
+class Ping1d : public PingDevice
 {
 public:
     /**
@@ -6,13 +10,38 @@ public:
      *
      *  @param ser: The device I/O
      */
-    Ping1D(Stream& ser);
+    Ping1d(PingPort& port) : PingDevice(port) {}
 
     /**
      * @brief Destructor
      */
-    ~Ping1D();
+    ~Ping1d();
 
+    /**
+     *  @brief Establish communications with the device, and initialize the update interval
+     *
+     *  @param ping_interval_ms: The interval (in milliseconds) between acoustic measurements
+     *
+     *  @return true if the device was initialized successfully
+     */
+    bool initialize(uint16_t ping_interval_ms = 50);
+
+    /**
+     *  @brief Request a ping_message from the device
+     *
+     *  @param id: The message ID to request
+     *  @param timeout_ms: The timeout period to wait for the requested ping_message to be received
+     *
+     *  @return The ping_message that was requested
+     *  @return null if the device did not reply with the requested message before the timeout period expired
+     *
+     *  @par ex.
+     *  @code
+     *  ping_msg_ping1D_voltage_5 msg(*pd.request(Ping1dId::Voltage_5));
+     *  @endcode
+     */
+    ping_message* request(uint16_t id, int timeout_ms = 500);
+    
     /**
      * @brief Set the device ID.
      *
@@ -199,12 +228,6 @@ public:
 
 
 private:
-    // Device I/O
-    Stream& _stream;
-
-    // For decoding PingMessages from the device
-    PingParser _parser;
-
     /**
      *  @brief Handle an incoming message from the device. Internal values are updated according to the device data.
      *

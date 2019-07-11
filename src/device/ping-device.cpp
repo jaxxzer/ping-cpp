@@ -21,6 +21,12 @@ int PingDevice::write(const char* data, int nBytes)
     return _port.write(data, nBytes);
 }
 
+void PingDevice::writeMessage(ping_message& msg)
+{
+    msg.updateChecksum();
+    write((char*)msg.msgData, msg.msgDataLength());
+}
+
 ping_message* PingDevice::waitMessage(uint16_t id, int timeout_ms)
 {
     int tstart = PingTime::time_ms();
@@ -49,8 +55,7 @@ ping_message* PingDevice::request(uint16_t id, int timeout_ms)
 {
     common_general_request msg;
     msg.set_requested_id(id);
-    msg.updateChecksum();
-    write((char*)msg.msgData, msg.msgDataLength());
+    writeMessage(msg);
     return waitMessage(id, timeout_ms);
 }
 void PingDevice::handleMessage(ping_message* pmsg)

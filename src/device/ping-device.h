@@ -40,6 +40,8 @@ public:
      */
     int write(const char* data, int length);
 
+    void writeMessage(ping_message& msg);
+
     /**
      *  @brief Wait for receipt of a message with a particular message id from device
      *

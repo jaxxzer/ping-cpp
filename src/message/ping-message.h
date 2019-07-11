@@ -42,7 +42,7 @@ public:
         return *this;
     }
 
-    ~ping_message() { if(msgData) free(msgData); }
+    ~ping_message() { if(msgData) free(msgData); msgData = nullptr; }
 
 protected:
     uint16_t _bufferLength;
@@ -51,7 +51,7 @@ public:
     static const uint8_t headerLength = 8;
     static const uint8_t checksumLength = 2;
 
-    uint8_t* msgData;
+    uint8_t* msgData = nullptr;
     uint16_t bufferLength() const { return _bufferLength; } // size of internal buffer allocation
     uint16_t msgDataLength() const { return headerLength + payload_length() + checksumLength; } // size of entire message buffer (header, payload, and checksum)
     uint8_t* message_data(uint32_t offset=0) const { return msgData + offset; }
