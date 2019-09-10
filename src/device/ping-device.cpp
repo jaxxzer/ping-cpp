@@ -58,9 +58,9 @@ ping_message* PingDevice::request(uint16_t id, int timeout_ms)
     writeMessage(msg);
     return waitMessage(id, timeout_ms);
 }
+
 void PingDevice::handleMessage(ping_message* pmsg)
 {
-
     switch (pmsg->message_id()) {
     case CommonId::NACK:
     {
@@ -86,7 +86,6 @@ void PingDevice::handleMessage(ping_message* pmsg)
         firmware_version_minor = msg.firmware_version_minor();
         firmware_version_patch = msg.firmware_version_patch();
         break;
-
     }
     default:
         break;

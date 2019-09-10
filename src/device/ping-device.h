@@ -1,9 +1,7 @@
 #pragma once
 
-#include "ping-port.h"
-
-#include "../message/ping-message-ping360.h"
-#include "../message/ping-parser.h"
+#include <ping-port.h>
+#include <ping-parser.h>
 
 class PingDevice
 {

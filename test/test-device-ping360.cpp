@@ -1,14 +1,13 @@
 #include <stdio.h>
 #include <termios.h> // Contains POSIX terminal control definitions
 
-#include "ping-time.h"
-#include "../src/device/ping-port-linux.h"
-#include "../src/device/ping-device.h"
-#include "../src/message/ping-message-common.h"
+#include <ping-device-ping360.h>
+#include <ping-port-linux.h>
+#include <ping-time.h>
 
 static const char* portName = "/dev/ttyUSB0";
 PingPortLinux port = PingPortLinux(portName);
-PingDevice device = PingDevice(port);
+PingDevice device = Ping360(port);
 
 const int samples = 200;
 const int duration = 5;
