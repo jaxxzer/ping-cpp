@@ -3,6 +3,16 @@
 #include <ping-port.h>
 #include <ping-parser.h>
 
+/**
+ * A PingDevice class can be used to communicate with a
+ * device implementing Blue Robotics ping-protocol*
+ *
+ * *only messages from the common message set are handled by the PingDevice
+ * base class
+ *
+ * to use another message set, you should subclass PingDevice
+ * and re-implement handleMessage
+ */
 class PingDevice
 {
 public:
@@ -10,7 +20,7 @@ public:
     /**
      *  @brief Constructor
      *
-     *  @param port: The device I/O
+     *  @param port: The device io handle
      */
     PingDevice(PingPort& port)  : _port(port)
                                 , _parser(4096)
@@ -38,7 +48,13 @@ public:
      */
     int write(const char* data, int length);
 
-    void writeMessage(ping_message& msg);
+    /**
+     *  @brief Write a ping_message to the device.
+     *
+     *  @param msg: a ping_message object. Note that the caller must ensure that the \n
+     *  ping_message object is prepared (call msg.updateChecksum first)
+     */
+    void writeMessage(const ping_message& msg);
 
     /**
      *  @brief Wait for receipt of a message with a particular message id from device
@@ -67,8 +83,6 @@ public:
      */
     ping_message* request(uint16_t id, int timeout_ms = 500);
 
-
-    
     uint8_t device_type;
     uint8_t device_revision;
     uint8_t firmware_version_major;
@@ -80,11 +94,12 @@ public:
 
 protected:
     /**
-     *  @brief Handle an incoming message from the device. Internal values are updated according to the device data.
+     *  @brief Handle an incoming message from the device. This object's values \n
+     *  are updated according to the device data.
      *
-     *  @param pmsg: The message received from the device
+     *  @param msg: A pointer to the message received from the device
      */
-    virtual void handleMessage(ping_message* pmsg);
+    virtual void handleMessage(ping_message* msg);
 
 private:
     PingPort& _port;

@@ -1,13 +1,13 @@
-#include "ping-device.h"
-#include "../message/ping-message-common.h"
-#include "ping-time.h"
-#include <cstdio>
+#include <ping-device.h>
+
+#include <ping-message.h>
+#include <ping-message-common.h>
+#include <ping-time.h>
 
 ping_message* PingDevice::read()
 {
     char b;
     int result = _port.read(&b, 1);
-    //printf("read byte %d with result %d\n", b, result);
     if (result > 0) {
         if(_parser.parseByte((char)b) == PingParser::NEW_MESSAGE) {
             return &_parser.rxMessage;
@@ -31,7 +31,6 @@ ping_message* PingDevice::waitMessage(uint16_t id, int timeout_ms)
 {
     int tstart = PingTime::time_ms();
     while (PingTime::time_ms() < tstart + timeout_ms) {
-        //printf("time %d\n", time_ms());
         ping_message* pmsg = read();
         
         if (!pmsg) {
@@ -65,7 +64,6 @@ void PingDevice::handleMessage(ping_message* pmsg)
     case CommonId::NACK:
     {
         common_nack msg(*pmsg);
-        printf("got nack: %d", msg.nacked_id());
         break;
     }
     case CommonId::PROTOCOL_VERSION:
