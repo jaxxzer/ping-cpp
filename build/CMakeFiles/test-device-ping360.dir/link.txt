@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/test-device-ping360.dir/test/test-device-ping360.cpp.o CMakeFiles/test-device-ping360.dir/src/device/ping-time-linux.cpp.o CMakeFiles/test-device-ping360.dir/src/device/ping-port-linux.cpp.o CMakeFiles/test-device-ping360.dir/src/device/ping-device.cpp.o  -o test-device-ping360 
