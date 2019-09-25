@@ -19,166 +19,187 @@ Ping1d::~Ping1d()
     }
 }
 
-bool Ping1d::initialize(uint16_t pingIntervalMs)
+bool Ping1d::initialize(uint16_t ping_interval_ms)
 {
-    if (!PingDevice::initialize()) {
+    if(!request(Ping1dId::DEVICE_ID)) {
+        return false;
+    }
+
+    if (!request(CommonId::DEVICE_INFORMATION)) {
+        return false;
+    }
+
+    if(!request(Ping1dId::VOLTAGE_5)) {
+        return false;
+    }
+
+    if (!request(Ping1dId::PROCESSOR_TEMPERATURE)) {
         return false;
     }
 
     // Configure ping interval
-    if (!set_ping_interval(pingIntervalMs)) {
+    if (!set_ping_interval(ping_interval_ms)) {
         return false;
     }
 
     return true;
 }
 
-void Ping1d::_handleMessage(ping_message* message)
+ping_message* Ping1d::request(uint16_t id, int timeout_ms)
 {
-    switch (message->message_id()) {
+    ping_message m(10);
+    m.set_payload_length(0);
+    m.set_message_id(id);
+    writeMessage(m);
+    return waitMessage(id, timeout_ms);
+}
+
+void Ping1d::_handleMessage(ping_message* msg)
+{
+    switch (msg->message_id()) {
         case Ping1dId::DEVICE_ID:
         {
-            ping1d_device_id* msg = static_cast<ping1d_device_id*>(message);
-            _device_id = msg->device_id();
+            ping1d_device_id m(*msg);
+            _device_id = m.device_id();
         }
             break;
 
         case Ping1dId::DISTANCE:
         {
-            ping1d_distance* msg = static_cast<ping1d_distance*>(message);
-            _distance = msg->distance();
-            _confidence = msg->confidence();
-            _transmit_duration = msg->transmit_duration();
-            _ping_number = msg->ping_number();
-            _scan_start = msg->scan_start();
-            _scan_length = msg->scan_length();
-            _gain_setting = msg->gain_setting();
+            ping1d_distance m(*msg);
+            _distance = m.distance();
+            _confidence = m.confidence();
+            _transmit_duration = m.transmit_duration();
+            _ping_number = m.ping_number();
+            _scan_start = m.scan_start();
+            _scan_length = m.scan_length();
+            _gain_setting = m.gain_setting();
         }
             break;
 
         case Ping1dId::DISTANCE_SIMPLE:
         {
-            ping1d_distance_simple* msg = static_cast<ping1d_distance_simple*>(message);
-            _distance = msg->distance();
-            _confidence = msg->confidence();
+            ping1d_distance_simple m(*msg);
+            _distance = m.distance();
+            _confidence = m.confidence();
         }
             break;
 
         case Ping1dId::FIRMWARE_VERSION:
         {
-            ping1d_firmware_version* msg = static_cast<ping1d_firmware_version*>(message);
-            _device_type = msg->device_type();
-            _device_model = msg->device_model();
-            _firmware_version_major = msg->firmware_version_major();
-            _firmware_version_minor = msg->firmware_version_minor();
+            ping1d_firmware_version m(*msg);
+            _device_type = m.device_type();
+            _device_model = m.device_model();
+            _firmware_version_major = m.firmware_version_major();
+            _firmware_version_minor = m.firmware_version_minor();
         }
             break;
 
         case Ping1dId::GAIN_SETTING:
         {
-            ping1d_gain_setting* msg = static_cast<ping1d_gain_setting*>(message);
-            _gain_setting = msg->gain_setting();
+            ping1d_gain_setting m(*msg);
+            _gain_setting = m.gain_setting();
         }
             break;
 
         case Ping1dId::GENERAL_INFO:
         {
-            ping1d_general_info* msg = static_cast<ping1d_general_info*>(message);
-            _firmware_version_major = msg->firmware_version_major();
-            _firmware_version_minor = msg->firmware_version_minor();
-            _voltage_5 = msg->voltage_5();
-            _ping_interval = msg->ping_interval();
-            _gain_setting = msg->gain_setting();
-            _mode_auto = msg->mode_auto();
+            ping1d_general_info m(*msg);
+            _firmware_version_major = m.firmware_version_major();
+            _firmware_version_minor = m.firmware_version_minor();
+            _voltage_5 = m.voltage_5();
+            _ping_interval = m.ping_interval();
+            _gain_setting = m.gain_setting();
+            _mode_auto = m.mode_auto();
         }
             break;
 
         case Ping1dId::MODE_AUTO:
         {
-            ping1d_mode_auto* msg = static_cast<ping1d_mode_auto*>(message);
-            _mode_auto = msg->mode_auto();
+            ping1d_mode_auto m(*msg);
+            _mode_auto = m.mode_auto();
         }
             break;
 
         case Ping1dId::PCB_TEMPERATURE:
         {
-            ping1d_pcb_temperature* msg = static_cast<ping1d_pcb_temperature*>(message);
-            _pcb_temperature = msg->pcb_temperature();
+            ping1d_pcb_temperature m(*msg);
+            _pcb_temperature = m.pcb_temperature();
         }
             break;
 
         case Ping1dId::PING_ENABLE:
         {
-            ping1d_ping_enable* msg = static_cast<ping1d_ping_enable*>(message);
-            _ping_enabled = msg->ping_enabled();
+            ping1d_ping_enable m(*msg);
+            _ping_enabled = m.ping_enabled();
         }
             break;
 
         case Ping1dId::PING_INTERVAL:
         {
-            ping1d_ping_interval* msg = static_cast<ping1d_ping_interval*>(message);
-            _ping_interval = msg->ping_interval();
+            ping1d_ping_interval m(*msg);
+            _ping_interval = m.ping_interval();
         }
             break;
 
         case Ping1dId::PROCESSOR_TEMPERATURE:
         {
-            ping1d_processor_temperature* msg = static_cast<ping1d_processor_temperature*>(message);
-            _processor_temperature = msg->processor_temperature();
+            ping1d_processor_temperature m(*msg);
+            _processor_temperature = m.processor_temperature();
         }
             break;
 
         case Ping1dId::PROFILE:
         {
-            ping1d_profile* msg = static_cast<ping1d_profile*>(message);
-            _distance = msg->distance();
-            _confidence = msg->confidence();
-            _transmit_duration = msg->transmit_duration();
-            _ping_number = msg->ping_number();
-            _scan_start = msg->scan_start();
-            _scan_length = msg->scan_length();
-            _gain_setting = msg->gain_setting();
-            if (msg->profile_data_length() > _profile_data_length) {
+            ping1d_profile m(*msg);
+            _distance = m.distance();
+            _confidence = m.confidence();
+            _transmit_duration = m.transmit_duration();
+            _ping_number = m.ping_number();
+            _scan_start = m.scan_start();
+            _scan_length = m.scan_length();
+            _gain_setting = m.gain_setting();
+            if (m.profile_data_length() > _profile_data_length) {
                 if (_profile_data) {
                     free(_profile_data);
                 }
-                _profile_data = (uint8_t*)malloc(msg->profile_data_length() * sizeof(uint8_t));
+                _profile_data = (uint8_t*)malloc(_profile_data_length * sizeof(uint8_t));
             }
 
-            _profile_data_length = msg->profile_data_length();
+            _profile_data_length = m.profile_data_length();
 
             for (uint16_t i = 0; i < _profile_data_length; i++) {
-                _profile_data[i] = msg->profile_data()[i];
+                _profile_data[i] = m.profile_data()[i];
             }
         }
             break;
 
         case Ping1dId::RANGE:
         {
-            ping1d_range* msg = static_cast<ping1d_range*>(message);
-            _scan_start = msg->scan_start();
-            _scan_length = msg->scan_length();
+            ping1d_range m(*msg);
+            _scan_start = m.scan_start();
+            _scan_length = m.scan_length();
         }
             break;
 
         case Ping1dId::SPEED_OF_SOUND:
         {
-            ping1d_speed_of_sound* msg = static_cast<ping1d_speed_of_sound*>(message);
-            _speed_of_sound = msg->speed_of_sound();
+            ping1d_speed_of_sound m(*msg);
+            _speed_of_sound = m.speed_of_sound();
         }
             break;
 
         case Ping1dId::TRANSMIT_DURATION:
         {
-            ping1d_transmit_duration* msg = static_cast<ping1d_transmit_duration*>(message);
-            _transmit_duration = msg->transmit_duration();
+            ping1d_transmit_duration m(*msg);
+            _transmit_duration = m.transmit_duration();
         }
             break;
 
         case Ping1dId::VOLTAGE_5:
         {
-            ping1d_voltage_5* msg = static_cast<ping1d_voltage_5*>(message);
-            _voltage_5 = msg->voltage_5();
+            ping1d_voltage_5 m(*msg);
+            _voltage_5 = m.voltage_5();
         }
             break;
 
@@ -190,9 +211,9 @@ void Ping1d::_handleMessage(ping_message* message)
 
 bool Ping1d::set_device_id(uint8_t device_id, bool verify)
 {
-    ping1d_set_device_id msg;
-    msg.set_device_id(device_id);
-    writeMessage(msg);
+    ping1d_set_device_id m;
+    m.set_device_id(device_id);
+    writeMessage(m);
     if (!request(Ping1dId::DEVICE_ID)) {
         return false; // no reply from device
     }
@@ -206,9 +227,9 @@ bool Ping1d::set_device_id(uint8_t device_id, bool verify)
 
 bool Ping1d::set_gain_setting(uint8_t gain_setting, bool verify)
 {
-    ping1d_set_gain_setting msg;
-    msg.set_gain_setting(gain_setting);
-    writeMessage(msg);
+    ping1d_set_gain_setting m;
+    m.set_gain_setting(gain_setting);
+    writeMessage(m);
     if (!request(Ping1dId::GAIN_SETTING)) {
         return false; // no reply from device
     }
@@ -222,9 +243,9 @@ bool Ping1d::set_gain_setting(uint8_t gain_setting, bool verify)
 
 bool Ping1d::set_mode_auto(uint8_t mode_auto, bool verify)
 {
-    ping1d_set_mode_auto msg;
-    msg.set_mode_auto(mode_auto);
-    writeMessage(msg);
+    ping1d_set_mode_auto m;
+    m.set_mode_auto(mode_auto);
+    writeMessage(m);
     if (!request(Ping1dId::MODE_AUTO)) {
         return false; // no reply from device
     }
@@ -238,9 +259,9 @@ bool Ping1d::set_mode_auto(uint8_t mode_auto, bool verify)
 
 bool Ping1d::set_ping_enable(uint8_t ping_enabled, bool verify)
 {
-    ping1d_set_ping_enable msg;
-    msg.set_ping_enabled(ping_enabled);
-    writeMessage(msg);
+    ping1d_set_ping_enable m;
+    m.set_ping_enabled(ping_enabled);
+    writeMessage(m);
     if (!request(Ping1dId::PING_ENABLE)) {
         return false; // no reply from device
     }
@@ -254,9 +275,9 @@ bool Ping1d::set_ping_enable(uint8_t ping_enabled, bool verify)
 
 bool Ping1d::set_ping_interval(uint16_t ping_interval, bool verify)
 {
-    ping1d_set_ping_interval msg;
-    msg.set_ping_interval(ping_interval);
-    writeMessage(msg);
+    ping1d_set_ping_interval m;
+    m.set_ping_interval(ping_interval);
+    writeMessage(m);
     if (!request(Ping1dId::PING_INTERVAL)) {
         return false; // no reply from device
     }
@@ -270,10 +291,10 @@ bool Ping1d::set_ping_interval(uint16_t ping_interval, bool verify)
 
 bool Ping1d::set_range(uint32_t scan_start, uint32_t scan_length, bool verify)
 {
-    ping1d_set_range msg;
-    msg.set_scan_start(scan_start);
-    msg.set_scan_length(scan_length);
-    writeMessage(msg);
+    ping1d_set_range m;
+    m.set_scan_start(scan_start);
+    m.set_scan_length(scan_length);
+    writeMessage(m);
     if (!request(Ping1dId::RANGE)) {
         return false; // no reply from device
     }
@@ -288,9 +309,9 @@ bool Ping1d::set_range(uint32_t scan_start, uint32_t scan_length, bool verify)
 
 bool Ping1d::set_speed_of_sound(uint32_t speed_of_sound, bool verify)
 {
-    ping1d_set_speed_of_sound msg;
-    msg.set_speed_of_sound(speed_of_sound);
-    writeMessage(msg);
+    ping1d_set_speed_of_sound m;
+    m.set_speed_of_sound(speed_of_sound);
+    writeMessage(m);
     if (!request(Ping1dId::SPEED_OF_SOUND)) {
         return false; // no reply from device
     }
@@ -301,3 +322,4 @@ bool Ping1d::set_speed_of_sound(uint32_t speed_of_sound, bool verify)
     }
     return true; // success
 }
+

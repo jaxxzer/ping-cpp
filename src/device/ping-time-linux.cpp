@@ -3,7 +3,7 @@
 #include <chrono>
 #include <unistd.h>
 
-int PingTime::timeMss() {
+int PingTime::timeMs() {
   // std::chrono::time_point
   auto now = std::chrono::high_resolution_clock::now();
 

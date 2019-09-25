@@ -20,12 +20,28 @@ public:
     /**
      *  @brief Establish communications with the device, and initialize the update interval
      *
-     *  @param pingIntervalMs: The interval (in milliseconds) between acoustic measurements
+     *  @param ping_interval_ms: The interval (in milliseconds) between acoustic measurements
      *
      *  @return true if the device was initialized successfully
      */
-    bool initialize(uint16_t pingIntervalMs = 50);
+    bool initialize(uint16_t ping_interval_ms = 50);
 
+    /**
+     *  @brief Request a ping_message from the device
+     *
+     *  @param id: The message ID to request
+     *  @param timeout_ms: The timeout period to wait for the requested ping_message to be received
+     *
+     *  @return The ping_message that was requested
+     *  @return null if the device did not reply with the requested message before the timeout period expired
+     *
+     *  @par ex.
+     *  @code
+     *  ping_msg_ping1D_voltage_5 msg(*pd.request(Ping1dId::Voltage_5));
+     *  @endcode
+     */
+    ping_message* request(uint16_t id, int timeout_ms = 500);
+    
     /**
      * @brief Set the device ID.
      *
@@ -215,9 +231,9 @@ private:
     /**
      *  @brief Handle an incoming message from the device. Internal values are updated according to the device data.
      *
-     *  @param message: A pointer to the message received from the device
+     *  @param msg: A pointer to the message received from the device
      */
-    void _handleMessage(ping_message* message) override;
+    void _handleMessage(ping_message* msg) override;
 
     // Device type. 0: Unknown; 1: Echosounder
     uint8_t _device_type = 0;

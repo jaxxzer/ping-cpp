@@ -61,8 +61,7 @@ bool PingPortLinux::setBaudrate(int baudrate) {
   tty.c_iflag = 0;
   tty.c_iflag &= (IGNBRK | IGNPAR | INPCK);
 
-  tty.c_cc[VTIME] = 1; // Wait for up to 1s (10 deciseconds), returning as soon
-                       // as any data is received.
+  tty.c_cc[VTIME] = 1; // Wait for up to 0.1s, returning as soon as any data is received.
   tty.c_cc[VMIN] = 0;
 
   // Set in/out baud rate

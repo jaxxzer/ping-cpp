@@ -23,6 +23,13 @@ public:
   PingDevice(PingPort& port) : _port(port), _parser(4096) {}
 
   /**
+   *  @brief Initialize the device by establishing communications and reading in some basic data
+   * 
+   *  @return true if the device was successfully initialized
+   */
+  virtual bool initialize();
+
+  /**
    *  @brief Read in data from device, return a PingMessage if available.
    *  Data will be read in from device until there is no data left in the RX
    * buffer, or a valid PingMessage is successfully decoded. Note that there may
@@ -39,7 +46,7 @@ public:
    *  @brief Request a ping_message from the device
    *
    *  @param id: The message ID to request
-   *  @param timeout_ms: The timeout period to wait for the requested
+   *  @param timeoutMs: The timeout period to wait for the requested
    * ping_message to be received
    *
    *  @return The ping_message that was requested
@@ -51,21 +58,21 @@ public:
    *  ping_msg_ping1D_voltage_5 msg(*pd.request(Ping1dId::Voltage_5));
    *  @endcode
    */
-  ping_message* request(uint16_t id, int timeout_ms = 500);
+  ping_message* request(uint16_t id, int timeoutMs = 500);
 
   /**
    *  @brief Wait for receipt of a message with a particular message id from
    * device
    *
    *  @param id: The message id to wait for
-   *  @param timeout_ms: The timeout period to wait for a matching ping_message
+   *  @param timeoutMs: The timeout period to wait for a matching ping_message
    * to be received
    *
    *  @return The ping_message received with matching id
    *  @return null if the timeout expires and no ping_message was received with
    * a matching id
    */
-  ping_message* waitMessage(uint16_t id, int timeout_ms = 500);
+  ping_message* waitMessage(uint16_t id, int timeoutMs = 500);
 
   /**
    *  @brief Write data to device
@@ -78,12 +85,12 @@ public:
   int write(const char* data, int length);
 
   /**
-   *  @brief Write a ping_message to the device.
+   *  @brief Write a ping_message to the device. Before writing, the ping_messaage is \n
+   *  prepared by updating the checksum
    *
-   *  @param msg: a ping_message object. Note that the caller must ensure that
-   * the \n ping_message object is prepared (call msg.updateChecksum first)
+   *  @param message: a pointer to the ping_message
    */
-  void writeMessage(const ping_message& msg);
+  void writeMessage(ping_message& message);
 
   uint8_t device_type;
   uint8_t device_revision;
@@ -99,9 +106,9 @@ protected:
    *  @brief Handle an incoming message from the device. This object's values \n
    *  are updated according to the device data.
    *
-   *  @param msg: A pointer to the message received from the device
+   *  @param message: A pointer to the message received from the device
    */
-  virtual void _handleMessage(ping_message* msg);
+  virtual void _handleMessage(ping_message* message);
 
 private:
   PingParser _parser;

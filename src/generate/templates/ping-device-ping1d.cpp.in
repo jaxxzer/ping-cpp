@@ -25,64 +25,43 @@ Ping1d::~Ping1d()
 {% endfor %}
 }
 
-bool Ping1d::initialize(uint16_t ping_interval_ms)
+bool Ping1d::initialize(uint16_t pingIntervalMs)
 {
-    if(!request(Ping1dId::DEVICE_ID)) {
-        return false;
-    }
-
-    if (!request(CommonId::DEVICE_INFORMATION)) {
-        return false;
-    }
-
-    if(!request(Ping1dId::VOLTAGE_5)) {
-        return false;
-    }
-
-    if (!request(Ping1dId::PROCESSOR_TEMPERATURE)) {
+    if (!PingDevice.initialize()) {
         return false;
     }
 
     // Configure ping interval
-    if (!set_ping_interval(ping_interval_ms)) {
+    if (!set_ping_interval(pingIntervalMs)) {
         return false;
     }
 
     return true;
 }
 
-ping_message* Ping1d::request(uint16_t id, int timeout_ms)
+void Ping1d::_handleMessage(ping_message* message)
 {
-    ping_message m(10);
-    m.set_payload_length(0);
-    m.set_message_id(id);
-    writeMessage(m);
-    return waitMessage(id, timeout_ms);
-}
-
-void Ping1d::_handleMessage(ping_message* msg)
-{
-    switch (msg->message_id()) {
+    switch (message->message_id()) {
 {% for msg in messages["get"]|sort %}
         case Ping1dId::{{msg|upper}}:
         {
-            ping1d_{{msg}} m(*msg);
+            ping1d_{{msg}}* msg = static_cast<ping1d_{{msg}}*>(message);
 {% for field in messages["get"][msg].payload %}
 {% if generator.is_vector(field.type) %}
-            if (m.{{field.name}}_length() > _{{field.name}}_length) {
+            if (msg->{{field.name}}_length() > _{{field.name}}_length) {
                 if (_{{field.name}}) {
                     free(_{{field.name}});
                 }
-                _{{field.name}} = ({{generator.get_type_string(field.vector.datatype)}}*)malloc(_{{field.name}}_length * sizeof({{generator.get_type_string(field.vector.datatype)}}));
+                _{{field.name}} = ({{generator.get_type_string(field.vector.datatype)}}*)malloc(msg->{{field.name}}_length() * sizeof({{generator.get_type_string(field.vector.datatype)}}));
             }
 
-            _{{field.name}}_length = m.{{field.name}}_length();
+            _{{field.name}}_length = msg->{{field.name}}_length();
 
             for (uint16_t i = 0; i < _{{field.name}}_length; i++) {
-                _{{field.name}}[i] = m.{{field.name}}()[i];
+                _{{field.name}}[i] = msg->{{field.name}}()[i];
             }
 {% else %}
-            _{{field.name}} = m.{{field.name}}();
+            _{{field.name}} = msg->{{field.name}}();
 {% endif %}
 {% endfor %}
         }
@@ -98,11 +77,11 @@ void Ping1d::_handleMessage(ping_message* msg)
 {% for msg in messages["set"]|sort %}
 bool Ping1d::{{msg}}({% for field in messages["set"][msg].payload %}{{generator.get_type_string(field.type)}} {{field.name}}, {% endfor %}bool verify)
 {
-    ping1d_{{msg}} m;
+    ping1d_{{msg}} msg;
 {% for field in messages["set"][msg].payload %}
-    m.set_{{field.name}}({{field.name}});
+    msg.set_{{field.name}}({{field.name}});
 {% endfor %}
-    writeMessage(m);
+    writeMessage(msg);
     if (!request(Ping1dId::{{msg|replace("set_", "")|upper}})) {
         return false; // no reply from device
     }
