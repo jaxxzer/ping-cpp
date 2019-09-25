@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ping-device.h"
+#include <ping-device.h>
 
 class Ping1d : public PingDevice
 {
@@ -91,9 +91,9 @@ private:
     /**
      *  @brief Handle an incoming message from the device. Internal values are updated according to the device data.
      *
-     *  @param pmsg: The message received from the device
+     *  @param msg: A pointer to the message received from the device
      */
-    void handleMessage(ping_message* pmsg) override;
+    void _handleMessage(ping_message* msg) override;
 
 {% for field in proplist %}
     // {{field.description}}

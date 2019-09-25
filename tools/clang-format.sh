@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-find src -name *.c -o -name *.h | xargs clang-format -i
+find src -name "*.cpp" -o -name "*.h" | xargs clang-format -i
