@@ -1,16 +1,25 @@
+#include <ping-port-linux.h>
+#include <ping-device-ping1d.h>
+#include <ping-message-common.h>
+#include <ping-message-ping1d.h>
+
 #include <stdio.h>
 
-#include "ping-port-linux.h"
-#include "ping-device-ping1d.h"
-#include "ping-message-common.h"
-#include "ping-message-ping1d.h"
+#define EXENAME "test-device-ping1d"
 
-static const char* portName = "/dev/ttyUSB0";
-
-
-int main()
+int main(int argc, char *argv[])
 {
-    PingPortLinux port = PingPortLinux(portName);
+  printf(" ~* " EXENAME " *~\n");
+
+  if (argc < 2 || argc > 2) {
+    printf("usage: " EXENAME " <path to port>\n");
+    printf("ex: " EXENAME " /dev/ttyUSB0\n");
+    return 1;
+  }
+
+  const char *portFileName     = argv[1];
+
+    PingPortLinux port = PingPortLinux(portFileName);
     Ping1d device = Ping1d(port);
 
     printf("initializing\n");
@@ -19,29 +28,89 @@ int main()
         printf("device initialization failed\n");
     } else {
         printf("pass\n");
+        printf("Device Type %d id %d hardware revision %d", device.device_type, device.device_id, device.device_revision);
+        printf("Device Firmware v%d.%d.%d", device.version_major, device.version_minor, device.version_patch);
     }
 
-    printf("set mode auto\n");
-
-    if (!device.set_mode_auto(false)) {
-        printf("failed to set device mode auto\n");
+    printf("set device id\n");
+    if (!device.set_device_id(1)) {
+        printf("failed to set device id\n");
     } else {
-        printf("pass");
+        printf("pass\n");
     }
     
-    printf("set range");
+    printf("set range\n");
     if (!device.set_range(100, 30000)) {
         printf("failed to set scan range\n");
     } else {
         printf("pass\n");
     }
 
-    printf("requesting profile\n");
-    if (!device.request(Ping1dId::PROFILE, 4000)) {
-        printf("no reply\n");
+    printf("set range\n");
+    if (!device.set_speed_of_sound(1550000)) {
+        printf("failed to set scan range\n");
     } else {
-        printf("pass");
+        printf("pass\n");
     }
 
+    printf("set mode auto\n");
+    if (!device.set_mode_auto(false)) {
+        printf("failed to set device mode auto\n");
+    } else {
+        printf("pass\n");
+    }
+
+    printf("set ping interval\n");
+    if (!device.set_ping_interval(200)) {
+        printf("failed to set ping interval\n");
+    } else {
+        printf("pass\n");
+    }
+
+    printf("set gain setting\n");
+    if (!device.set_gain_setting(1)) {
+        printf("failed to set gain setting\n");
+    } else {
+        printf("pass\n");
+    }
+
+    printf("set ping enable\n");
+    if (!device.set_ping_enable(1)) {
+        printf("failed to set ping enable\n");
+    } else {
+        printf("pass\n");
+    }
+
+    auto testRequest = [&device](const char* message, uint16_t msgId)
+        {
+            printf("requesting %s\n", message);
+            if (!device.request(msgId, 4000)) {
+                printf("fail\n");
+                return false;
+            } else {
+                printf("pass\n");
+                return true;
+            }
+        };
+
+    testRequest("firmware version", Ping1dId::FIRMWARE_VERSION);
+    testRequest("device id", Ping1dId::DEVICE_ID);
+    testRequest("voltage 5", Ping1dId::VOLTAGE_5);
+    testRequest("speed of sound", Ping1dId::SPEED_OF_SOUND);
+    testRequest("range", Ping1dId::RANGE);
+    testRequest("auto mode", Ping1dId::MODE_AUTO);
+    testRequest("ping interval", Ping1dId::PING_INTERVAL);
+    testRequest("gain setting", Ping1dId::GAIN_SETTING);
+    testRequest("transmit duration", Ping1dId::TRANSMIT_DURATION);
+    testRequest("general info", Ping1dId::GENERAL_INFO);
+    testRequest("distance simple", Ping1dId::DISTANCE_SIMPLE);
+    testRequest("distance", Ping1dId::DISTANCE);
+    testRequest("processor temperature", Ping1dId::PROCESSOR_TEMPERATURE);
+    testRequest("pcb temperature", Ping1dId::PCB_TEMPERATURE);
+    testRequest("ping enable", Ping1dId::PING_ENABLE);
+
+    testRequest("profile", Ping1dId::PROFILE);
+    testRequest("profile", Ping1dId::PROFILE);
+    testRequest("profile", Ping1dId::PROFILE);
     return 0;
 }

@@ -37,7 +37,7 @@ ping_message* PingDevice::request(uint16_t id, int timeoutMs) {
 
 ping_message* PingDevice::waitMessage(uint16_t id, int timeoutMs) {
   int tstart = PingTime::timeMs();
-  while (PingTime::timeMs() < tstart + timeoutMs) {
+  while (PingTime::timeMs() < tstart + 40000) {
     ping_message* msg = read();
 
     if (!msg) {
@@ -54,6 +54,7 @@ ping_message* PingDevice::waitMessage(uint16_t id, int timeoutMs) {
       return msg;
     }
   }
+
   return nullptr;
 }
 

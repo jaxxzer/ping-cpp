@@ -106,109 +106,66 @@ public:
 
 
 
-    /**
-     * Return the latest value received
-     */
-    uint8_t device_type() { return _device_type; }
+    // Device type. 0: Unknown; 1: Echosounder
+    uint8_t device_type = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint8_t device_model() { return _device_model; }
+    // Device model. 0: Unknown; 1: Ping1D
+    uint8_t device_model = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint16_t firmware_version_major() { return _firmware_version_major; }
+    // Firmware version major number.
+    uint16_t firmware_version_major = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint16_t firmware_version_minor() { return _firmware_version_minor; }
+    // Firmware version minor number.
+    uint16_t firmware_version_minor = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint8_t device_id() { return _device_id; }
+    // The device ID (0-254). 255 is reserved for broadcast messages.
+    uint8_t device_id = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint16_t voltage_5() { return _voltage_5; }
+    // The 5V rail voltage.
+    uint16_t voltage_5 = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint32_t speed_of_sound() { return _speed_of_sound; }
+    // The speed of sound in the measurement medium. ~1,500,000 mm/s for water.
+    uint32_t speed_of_sound = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint32_t scan_start() { return _scan_start; }
+    // The beginning of the scan range in mm from the transducer.
+    uint32_t scan_start = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint32_t scan_length() { return _scan_length; }
+    // The length of the scan range.
+    uint32_t scan_length = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint8_t mode_auto() { return _mode_auto; }
+    // 0: manual mode, 1: auto mode
+    uint8_t mode_auto = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint16_t ping_interval() { return _ping_interval; }
+    // The minimum interval between acoustic measurements. The actual interval may be longer.
+    uint16_t ping_interval = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint32_t gain_setting() { return _gain_setting; }
+    // The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144
+    uint32_t gain_setting = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint16_t transmit_duration() { return _transmit_duration; }
+    // Acoustic pulse duration.
+    uint16_t transmit_duration = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint32_t distance() { return _distance; }
+    // Distance to the target.
+    uint32_t distance = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint8_t confidence() { return _confidence; }
+    // Confidence in the distance measurement.
+    uint8_t confidence = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint32_t ping_number() { return _ping_number; }
+    // The pulse/measurement count since boot.
+    uint32_t ping_number = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint16_t processor_temperature() { return _processor_temperature; }
+    // The temperature in centi-degrees Centigrade (100 * degrees C).
+    uint16_t processor_temperature = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint16_t pcb_temperature() { return _pcb_temperature; }
+    // The temperature in centi-degrees Centigrade (100 * degrees C).
+    uint16_t pcb_temperature = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint8_t ping_enabled() { return _ping_enabled; }
+    // The state of the acoustic output. 0: disabled, 1:enabled
+    uint8_t ping_enabled = 0;
 
-    /**
-     * Return the latest value received
-     */
-    uint16_t profile_data_length() { return _profile_data_length; }
-    /**
-     * Return the latest value received
-     */
-    uint8_t* profile_data() { return _profile_data; }
+    // An array of return strength measurements taken at regular intervals across the scan region.
+    uint16_t profile_data_length = 0;
+    uint8_t* profile_data = 0;
 
 
 private:
@@ -218,66 +175,4 @@ private:
      *  @param message: A pointer to the message received from the device
      */
     void _handleMessage(ping_message* message) override;
-
-    // Device type. 0: Unknown; 1: Echosounder
-    uint8_t _device_type = 0;
-
-    // Device model. 0: Unknown; 1: Ping1D
-    uint8_t _device_model = 0;
-
-    // Firmware version major number.
-    uint16_t _firmware_version_major = 0;
-
-    // Firmware version minor number.
-    uint16_t _firmware_version_minor = 0;
-
-    // The device ID (0-254). 255 is reserved for broadcast messages.
-    uint8_t _device_id = 0;
-
-    // The 5V rail voltage.
-    uint16_t _voltage_5 = 0;
-
-    // The speed of sound in the measurement medium. ~1,500,000 mm/s for water.
-    uint32_t _speed_of_sound = 0;
-
-    // The beginning of the scan range in mm from the transducer.
-    uint32_t _scan_start = 0;
-
-    // The length of the scan range.
-    uint32_t _scan_length = 0;
-
-    // 0: manual mode, 1: auto mode
-    uint8_t _mode_auto = 0;
-
-    // The minimum interval between acoustic measurements. The actual interval may be longer.
-    uint16_t _ping_interval = 0;
-
-    // The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144
-    uint32_t _gain_setting = 0;
-
-    // Acoustic pulse duration.
-    uint16_t _transmit_duration = 0;
-
-    // Distance to the target.
-    uint32_t _distance = 0;
-
-    // Confidence in the distance measurement.
-    uint8_t _confidence = 0;
-
-    // The pulse/measurement count since boot.
-    uint32_t _ping_number = 0;
-
-    // The temperature in centi-degrees Centigrade (100 * degrees C).
-    uint16_t _processor_temperature = 0;
-
-    // The temperature in centi-degrees Centigrade (100 * degrees C).
-    uint16_t _pcb_temperature = 0;
-
-    // The state of the acoustic output. 0: disabled, 1:enabled
-    uint8_t _ping_enabled = 0;
-
-    // An array of return strength measurements taken at regular intervals across the scan region.
-    uint16_t _profile_data_length = 0;
-    uint8_t* _profile_data = 0;
-
 };

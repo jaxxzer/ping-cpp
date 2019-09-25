@@ -17,8 +17,8 @@ Ping1d::~Ping1d()
 {% for msg in messages["get"]|sort %}
 {% for field in messages["get"][msg].payload %}
 {% if generator.is_vector(field.type) %}
-    if (_{{field.name}}) {
-       free(_{{field.name}});
+    if ({{field.name}}) {
+       free({{field.name}});
     }
 {% endif %}
 {% endfor %}
@@ -27,7 +27,7 @@ Ping1d::~Ping1d()
 
 bool Ping1d::initialize(uint16_t pingIntervalMs)
 {
-    if (!PingDevice.initialize()) {
+    if (!PingDevice::initialize()) {
         return false;
     }
 
@@ -48,20 +48,20 @@ void Ping1d::_handleMessage(ping_message* message)
             ping1d_{{msg}}* msg = static_cast<ping1d_{{msg}}*>(message);
 {% for field in messages["get"][msg].payload %}
 {% if generator.is_vector(field.type) %}
-            if (msg->{{field.name}}_length() > _{{field.name}}_length) {
-                if (_{{field.name}}) {
-                    free(_{{field.name}});
+            if (msg->{{field.name}}_length() > {{field.name}}_length) {
+                if ({{field.name}}) {
+                    free({{field.name}});
                 }
-                _{{field.name}} = ({{generator.get_type_string(field.vector.datatype)}}*)malloc(msg->{{field.name}}_length() * sizeof({{generator.get_type_string(field.vector.datatype)}}));
+                {{field.name}} = ({{generator.get_type_string(field.vector.datatype)}}*)malloc(msg->{{field.name}}_length() * sizeof({{generator.get_type_string(field.vector.datatype)}}));
             }
 
-            _{{field.name}}_length = msg->{{field.name}}_length();
+            {{field.name}}_length = msg->{{field.name}}_length();
 
-            for (uint16_t i = 0; i < _{{field.name}}_length; i++) {
-                _{{field.name}}[i] = msg->{{field.name}}()[i];
+            for (uint16_t i = 0; i < {{field.name}}_length; i++) {
+                {{field.name}}[i] = msg->{{field.name}}()[i];
             }
 {% else %}
-            _{{field.name}} = msg->{{field.name}}();
+            {{field.name}} = msg->{{field.name}}();
 {% endif %}
 {% endfor %}
         }
@@ -72,6 +72,8 @@ void Ping1d::_handleMessage(ping_message* message)
         default:
             break;
     }
+
+    PingDevice::_handleMessage(message);
 }
 
 {% for msg in messages["set"]|sort %}
@@ -88,7 +90,7 @@ bool Ping1d::{{msg}}({% for field in messages["set"][msg].payload %}{{generator.
     // Read back the data and check that changes have been applied
     if (verify
 {% if messages["set"][msg].payload %}
-        && ({% for field in messages["set"][msg].payload %}_{{field.name}} != {{field.name}}{{ "\n        || " if not loop.last }}{% endfor %})) {
+        && ({% for field in messages["set"][msg].payload %}{{field.name}} != {{field.name}}{{ "\n        || " if not loop.last }}{% endfor %})) {
 {% endif %}
         return false; // device reply does not match
     }

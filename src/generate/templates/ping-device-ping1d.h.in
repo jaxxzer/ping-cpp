@@ -54,19 +54,14 @@ public:
 {% endfor %}
 
 {% for field in proplist %}
-    /**
-     * Return the latest value received
-     */
+    // {{field.description}}
 {% if generator.is_vector(field.type) %}
 {% if field.vector.sizetype %}
-    {{generator.get_type_string(field.vector.sizetype)}} {{field.name}}_length() { return _{{field.name}}_length; }
-    /**
-     * Return the latest value received
-     */
-    {{generator.get_type_string(field.vector.datatype)}}* {{field.name}}() { return _{{field.name}}; }
+    {{generator.get_type_string(field.vector.sizetype)}} {{field.name}}_length = 0;
 {% endif %}
+    {{generator.get_type_string(field.vector.datatype)}}* {{field.name}} = 0;
 {% else %}
-    {{generator.get_type_string(field.type)}} {{field.name}}() { return _{{field.name}}; }
+    {{generator.get_type_string(field.type)}} {{field.name}} = 0;
 {% endif %}
 
 {% endfor %}
@@ -78,17 +73,4 @@ private:
      *  @param message: A pointer to the message received from the device
      */
     void _handleMessage(ping_message* message) override;
-
-{% for field in proplist %}
-    // {{field.description}}
-{% if generator.is_vector(field.type) %}
-{% if field.vector.sizetype %}
-    {{generator.get_type_string(field.vector.sizetype)}} _{{field.name}}_length = 0;
-{% endif %}
-    {{generator.get_type_string(field.vector.datatype)}}* _{{field.name}} = 0;
-{% else %}
-    {{generator.get_type_string(field.type)}} _{{field.name}} = 0;
-{% endif %}
-
-{% endfor %}
 };
