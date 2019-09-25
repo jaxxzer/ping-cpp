@@ -41,7 +41,6 @@ public:
     bool {{msg}}({% for field in messages["set"][msg].payload %}{{generator.get_type_string(field.type)}} {{field.name}}, {% endfor %}bool verify = true);
 
 {% endfor %}
-
 {% set propnames=[] %}
 {% set proplist=[] %}
 {% for msg in messages["get"] %}
@@ -52,7 +51,6 @@ public:
 {% endif %}
 {% endfor %}
 {% endfor %}
-
 {% for field in proplist %}
     // {{field.description}}
 {% if generator.is_vector(field.type) %}

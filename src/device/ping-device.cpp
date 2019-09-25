@@ -4,8 +4,7 @@
 #include <ping-message.h>
 #include <ping-time.h>
 
-bool PingDevice::initialize()
-{
+bool PingDevice::initialize() {
   if (!request(CommonId::PROTOCOL_VERSION)) {
     return false;
   }
@@ -72,18 +71,18 @@ void PingDevice::_handleMessage(ping_message* message) {
   }
   case CommonId::PROTOCOL_VERSION: {
     common_protocol_version* msg = static_cast<common_protocol_version*>(message);
-    version_major = msg->version_major();
-    version_minor = msg->version_minor();
-    version_patch = msg->version_patch();
+    version_major                = msg->version_major();
+    version_minor                = msg->version_minor();
+    version_patch                = msg->version_patch();
     break;
   }
   case CommonId::DEVICE_INFORMATION: {
     common_device_information* msg = static_cast<common_device_information*>(message);
-    device_type            = msg->device_type();
-    device_revision        = msg->device_revision();
-    firmware_version_major = msg->firmware_version_major();
-    firmware_version_minor = msg->firmware_version_minor();
-    firmware_version_patch = msg->firmware_version_patch();
+    device_type                    = msg->device_type();
+    device_revision                = msg->device_revision();
+    firmware_version_major         = msg->firmware_version_major();
+    firmware_version_minor         = msg->firmware_version_minor();
+    firmware_version_patch         = msg->firmware_version_patch();
     break;
   }
   default:

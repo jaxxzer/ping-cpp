@@ -24,7 +24,7 @@ public:
 
   /**
    *  @brief Initialize the device by establishing communications and reading in some basic data
-   * 
+   *
    *  @return true if the device was successfully initialized
    */
   virtual bool initialize();

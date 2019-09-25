@@ -2,9 +2,9 @@
 // https://blog.mbedded.ninja/programming/operating-systems/linux/linux-serial-ports-using-c-cpp/#overview
 #include <ping-port-linux.h>
 
+#include <cerrno> // Error integer and strerror() function
 #include <cstdio>
 #include <cstring>
-#include <cerrno>    // Error integer and strerror() function
 #include <fcntl.h>   // Contains file controls like O_RDWR
 #include <termios.h> // Contains POSIX terminal control definitions
 #include <unistd.h>  // write(), read(), close()
@@ -62,7 +62,7 @@ bool PingPortLinux::setBaudrate(int baudrate) {
   tty.c_iflag &= (IGNBRK | IGNPAR | INPCK);
 
   tty.c_cc[VTIME] = 1; // Wait for up to 0.1s, returning as soon as any data is received.
-  tty.c_cc[VMIN] = 0;
+  tty.c_cc[VMIN]  = 0;
 
   // Set in/out baud rate
   cfsetispeed(&tty, baudrate);
