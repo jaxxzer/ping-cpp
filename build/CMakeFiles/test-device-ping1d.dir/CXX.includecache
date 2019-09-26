@@ -24,6 +24,8 @@ cstdio
 
 ../src/device/ping-port.h
 
+../src/device/ping-time.h
+
 ../src/message/ping-message-common.h
 ping-message.h
 ../src/message/ping-message.h
@@ -50,24 +52,30 @@ inttypes.h
 
 /home/jacob/git/ping-cpp/src/device/ping-device-ping1d.cpp
 ping-device-ping1d.h
-/home/jacob/git/ping-cpp/src/device/ping-device-ping1d.h
+-
 ping-message-common.h
-/home/jacob/git/ping-cpp/src/device/ping-message-common.h
+-
 ping-message-ping1d.h
-/home/jacob/git/ping-cpp/src/device/ping-message-ping1d.h
+-
 
-/home/jacob/git/ping-cpp/src/device/ping-device-ping1d.h
+/home/jacob/git/ping-cpp/src/device/ping-device.cpp
 ping-device.h
+-
+ping-message-common.h
+-
+ping-message.h
+-
+ping-time.h
 -
 
 /home/jacob/git/ping-cpp/test/test-device-ping1d.cpp
-ping-port-linux.h
--
 ping-device-ping1d.h
 -
 ping-message-common.h
 -
 ping-message-ping1d.h
+-
+ping-port-linux.h
 -
 stdio.h
 -

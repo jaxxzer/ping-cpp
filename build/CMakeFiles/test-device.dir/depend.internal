@@ -16,11 +16,11 @@ CMakeFiles/test-device.dir/src/device/ping-port-linux.cpp.o
 CMakeFiles/test-device.dir/src/device/ping-time-linux.cpp.o
  ../src/device/ping-time.h
  /home/jacob/git/ping-cpp/src/device/ping-time-linux.cpp
-CMakeFiles/test-device.dir/test/test-devvydev.cpp.o
+CMakeFiles/test-device.dir/test/test-device.cpp.o
+ ../src/device/ping-device.h
+ ../src/device/ping-port-linux.h
  ../src/device/ping-port.h
+ ../src/message/ping-message-common.h
+ ../src/message/ping-message.h
  ../src/message/ping-parser.h
- /home/jacob/git/ping-cpp/src/device/ping-device.h
- /home/jacob/git/ping-cpp/src/device/ping-port-linux.h
- /home/jacob/git/ping-cpp/src/message/ping-message-common.h
- /home/jacob/git/ping-cpp/src/message/ping-message.h
- /home/jacob/git/ping-cpp/test/test-devvydev.cpp
+ /home/jacob/git/ping-cpp/test/test-device.cpp

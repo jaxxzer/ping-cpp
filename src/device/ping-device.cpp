@@ -36,7 +36,7 @@ ping_message* PingDevice::request(uint16_t id, int timeoutMs) {
 
 ping_message* PingDevice::waitMessage(uint16_t id, int timeoutMs) {
   int tstart = PingTime::timeMs();
-  while (PingTime::timeMs() < tstart + 40000) {
+  while (PingTime::timeMs() < tstart + timeoutMs) {
     ping_message* msg = read();
 
     if (!msg) {
@@ -65,6 +65,8 @@ void PingDevice::writeMessage(ping_message& message) {
 }
 
 void PingDevice::_handleMessage(ping_message* message) {
+  device_id = message->source_device_id();
+
   switch (message->message_id()) {
   case CommonId::NACK: {
     break;

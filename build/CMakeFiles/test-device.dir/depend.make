@@ -16,11 +16,11 @@ CMakeFiles/test-device.dir/src/device/ping-port-linux.cpp.o: ../src/device/ping-
 CMakeFiles/test-device.dir/src/device/ping-time-linux.cpp.o: ../src/device/ping-time.h
 CMakeFiles/test-device.dir/src/device/ping-time-linux.cpp.o: ../src/device/ping-time-linux.cpp
 
-CMakeFiles/test-device.dir/test/test-devvydev.cpp.o: ../src/device/ping-port.h
-CMakeFiles/test-device.dir/test/test-devvydev.cpp.o: ../src/message/ping-parser.h
-CMakeFiles/test-device.dir/test/test-devvydev.cpp.o: ../src/device/ping-device.h
-CMakeFiles/test-device.dir/test/test-devvydev.cpp.o: ../src/device/ping-port-linux.h
-CMakeFiles/test-device.dir/test/test-devvydev.cpp.o: ../src/message/ping-message-common.h
-CMakeFiles/test-device.dir/test/test-devvydev.cpp.o: ../src/message/ping-message.h
-CMakeFiles/test-device.dir/test/test-devvydev.cpp.o: ../test/test-devvydev.cpp
+CMakeFiles/test-device.dir/test/test-device.cpp.o: ../src/device/ping-device.h
+CMakeFiles/test-device.dir/test/test-device.cpp.o: ../src/device/ping-port-linux.h
+CMakeFiles/test-device.dir/test/test-device.cpp.o: ../src/device/ping-port.h
+CMakeFiles/test-device.dir/test/test-device.cpp.o: ../src/message/ping-message-common.h
+CMakeFiles/test-device.dir/test/test-device.cpp.o: ../src/message/ping-message.h
+CMakeFiles/test-device.dir/test/test-device.cpp.o: ../src/message/ping-parser.h
+CMakeFiles/test-device.dir/test/test-device.cpp.o: ../test/test-device.cpp
 

@@ -57,18 +57,18 @@ include CMakeFiles/test-device.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/test-device.dir/flags.make
 
-CMakeFiles/test-device.dir/test/test-devvydev.cpp.o: CMakeFiles/test-device.dir/flags.make
-CMakeFiles/test-device.dir/test/test-devvydev.cpp.o: ../test/test-devvydev.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jacob/git/ping-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test-device.dir/test/test-devvydev.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test-device.dir/test/test-devvydev.cpp.o -c /home/jacob/git/ping-cpp/test/test-devvydev.cpp
+CMakeFiles/test-device.dir/test/test-device.cpp.o: CMakeFiles/test-device.dir/flags.make
+CMakeFiles/test-device.dir/test/test-device.cpp.o: ../test/test-device.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jacob/git/ping-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test-device.dir/test/test-device.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test-device.dir/test/test-device.cpp.o -c /home/jacob/git/ping-cpp/test/test-device.cpp
 
-CMakeFiles/test-device.dir/test/test-devvydev.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test-device.dir/test/test-devvydev.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jacob/git/ping-cpp/test/test-devvydev.cpp > CMakeFiles/test-device.dir/test/test-devvydev.cpp.i
+CMakeFiles/test-device.dir/test/test-device.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test-device.dir/test/test-device.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jacob/git/ping-cpp/test/test-device.cpp > CMakeFiles/test-device.dir/test/test-device.cpp.i
 
-CMakeFiles/test-device.dir/test/test-devvydev.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test-device.dir/test/test-devvydev.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jacob/git/ping-cpp/test/test-devvydev.cpp -o CMakeFiles/test-device.dir/test/test-devvydev.cpp.s
+CMakeFiles/test-device.dir/test/test-device.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test-device.dir/test/test-device.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jacob/git/ping-cpp/test/test-device.cpp -o CMakeFiles/test-device.dir/test/test-device.cpp.s
 
 CMakeFiles/test-device.dir/src/device/ping-time-linux.cpp.o: CMakeFiles/test-device.dir/flags.make
 CMakeFiles/test-device.dir/src/device/ping-time-linux.cpp.o: ../src/device/ping-time-linux.cpp
@@ -111,7 +111,7 @@ CMakeFiles/test-device.dir/src/device/ping-device.cpp.s: cmake_force
 
 # Object files for target test-device
 test__device_OBJECTS = \
-"CMakeFiles/test-device.dir/test/test-devvydev.cpp.o" \
+"CMakeFiles/test-device.dir/test/test-device.cpp.o" \
 "CMakeFiles/test-device.dir/src/device/ping-time-linux.cpp.o" \
 "CMakeFiles/test-device.dir/src/device/ping-port-linux.cpp.o" \
 "CMakeFiles/test-device.dir/src/device/ping-device.cpp.o"
@@ -119,7 +119,7 @@ test__device_OBJECTS = \
 # External object files for target test-device
 test__device_EXTERNAL_OBJECTS =
 
-test-device: CMakeFiles/test-device.dir/test/test-devvydev.cpp.o
+test-device: CMakeFiles/test-device.dir/test/test-device.cpp.o
 test-device: CMakeFiles/test-device.dir/src/device/ping-time-linux.cpp.o
 test-device: CMakeFiles/test-device.dir/src/device/ping-port-linux.cpp.o
 test-device: CMakeFiles/test-device.dir/src/device/ping-device.cpp.o

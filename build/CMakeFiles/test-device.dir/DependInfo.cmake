@@ -7,7 +7,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/jacob/git/ping-cpp/src/device/ping-device.cpp" "/home/jacob/git/ping-cpp/build/CMakeFiles/test-device.dir/src/device/ping-device.cpp.o"
   "/home/jacob/git/ping-cpp/src/device/ping-port-linux.cpp" "/home/jacob/git/ping-cpp/build/CMakeFiles/test-device.dir/src/device/ping-port-linux.cpp.o"
   "/home/jacob/git/ping-cpp/src/device/ping-time-linux.cpp" "/home/jacob/git/ping-cpp/build/CMakeFiles/test-device.dir/src/device/ping-time-linux.cpp.o"
-  "/home/jacob/git/ping-cpp/test/test-devvydev.cpp" "/home/jacob/git/ping-cpp/build/CMakeFiles/test-device.dir/test/test-devvydev.cpp.o"
+  "/home/jacob/git/ping-cpp/test/test-device.cpp" "/home/jacob/git/ping-cpp/build/CMakeFiles/test-device.dir/test/test-device.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

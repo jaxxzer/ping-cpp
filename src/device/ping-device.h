@@ -27,7 +27,7 @@ public:
    *
    *  @return true if the device was successfully initialized
    */
-  virtual bool initialize();
+  bool initialize();
 
   /**
    *  @brief Read in data from device, return a PingMessage if available.
@@ -92,6 +92,7 @@ public:
    */
   void writeMessage(ping_message& message);
 
+  uint8_t device_id;
   uint8_t device_type;
   uint8_t device_revision;
   uint8_t firmware_version_major;
@@ -108,7 +109,7 @@ protected:
    *
    *  @param message: A pointer to the message received from the device
    */
-  virtual void _handleMessage(ping_message* message);
+  void _handleMessage(ping_message* message);
 
 private:
   PingParser _parser;

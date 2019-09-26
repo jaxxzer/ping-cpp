@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/test-device.dir/test/test-devvydev.cpp.o"
+  "CMakeFiles/test-device.dir/test/test-device.cpp.o"
   "CMakeFiles/test-device.dir/src/device/ping-time-linux.cpp.o"
   "CMakeFiles/test-device.dir/src/device/ping-port-linux.cpp.o"
   "CMakeFiles/test-device.dir/src/device/ping-device.cpp.o"

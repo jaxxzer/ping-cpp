@@ -342,32 +342,32 @@ test/test-device-ping360.cpp.s:
 	$(MAKE) -f CMakeFiles/test-device-ping360.dir/build.make CMakeFiles/test-device-ping360.dir/test/test-device-ping360.cpp.s
 .PHONY : test/test-device-ping360.cpp.s
 
-test/test-devvydev.o: test/test-devvydev.cpp.o
+test/test-device.o: test/test-device.cpp.o
 
-.PHONY : test/test-devvydev.o
+.PHONY : test/test-device.o
 
 # target to build an object file
-test/test-devvydev.cpp.o:
-	$(MAKE) -f CMakeFiles/test-device.dir/build.make CMakeFiles/test-device.dir/test/test-devvydev.cpp.o
-.PHONY : test/test-devvydev.cpp.o
+test/test-device.cpp.o:
+	$(MAKE) -f CMakeFiles/test-device.dir/build.make CMakeFiles/test-device.dir/test/test-device.cpp.o
+.PHONY : test/test-device.cpp.o
 
-test/test-devvydev.i: test/test-devvydev.cpp.i
+test/test-device.i: test/test-device.cpp.i
 
-.PHONY : test/test-devvydev.i
+.PHONY : test/test-device.i
 
 # target to preprocess a source file
-test/test-devvydev.cpp.i:
-	$(MAKE) -f CMakeFiles/test-device.dir/build.make CMakeFiles/test-device.dir/test/test-devvydev.cpp.i
-.PHONY : test/test-devvydev.cpp.i
+test/test-device.cpp.i:
+	$(MAKE) -f CMakeFiles/test-device.dir/build.make CMakeFiles/test-device.dir/test/test-device.cpp.i
+.PHONY : test/test-device.cpp.i
 
-test/test-devvydev.s: test/test-devvydev.cpp.s
+test/test-device.s: test/test-device.cpp.s
 
-.PHONY : test/test-devvydev.s
+.PHONY : test/test-device.s
 
 # target to generate assembly for a file
-test/test-devvydev.cpp.s:
-	$(MAKE) -f CMakeFiles/test-device.dir/build.make CMakeFiles/test-device.dir/test/test-devvydev.cpp.s
-.PHONY : test/test-devvydev.cpp.s
+test/test-device.cpp.s:
+	$(MAKE) -f CMakeFiles/test-device.dir/build.make CMakeFiles/test-device.dir/test/test-device.cpp.s
+.PHONY : test/test-device.cpp.s
 
 test/test-message.o: test/test-message.cpp.o
 
@@ -426,9 +426,9 @@ help:
 	@echo "... test/test-device-ping360.o"
 	@echo "... test/test-device-ping360.i"
 	@echo "... test/test-device-ping360.s"
-	@echo "... test/test-devvydev.o"
-	@echo "... test/test-devvydev.i"
-	@echo "... test/test-devvydev.s"
+	@echo "... test/test-device.o"
+	@echo "... test/test-device.i"
+	@echo "... test/test-device.s"
 	@echo "... test/test-message.o"
 	@echo "... test/test-message.i"
 	@echo "... test/test-message.s"

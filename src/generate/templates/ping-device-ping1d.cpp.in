@@ -33,6 +33,7 @@ void Ping1d::_handleMessage(ping_message* message)
 {
   switch (message->message_id()) {
 {% for msg in messages["get"]|sort %}
+{% if not messages["get"][msg].deprecated %}
     case Ping1dId::{{msg|upper}}:
     {
       ping1d_{{msg}}* msg = static_cast<ping1d_{{msg}}*>(message);
@@ -56,7 +57,7 @@ void Ping1d::_handleMessage(ping_message* message)
 {% endfor %}
     }
       break;
-
+{% endif %}
 {% endfor %}
 
     default:

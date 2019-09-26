@@ -27,8 +27,9 @@ int main(int argc, char* argv[]) {
     printf("device initialization failed\n");
   } else {
     printf("pass\n");
-    printf("Device Type %d id %d hardware revision %d", device.device_type, device.device_id, device.device_revision);
-    printf("Device Firmware v%d.%d.%d", device.version_major, device.version_minor, device.version_patch);
+    printf("Device Type %d id %d hardware revision %d\n", device.device_type, device.device_id, device.device_revision);
+    printf("Ping Protocol v%d.%d.%d\n", device.version_major, device.version_minor, device.version_patch);
+    printf("Device Firmware v%d.%d.%d\n", device.firmware_version_major, device.firmware_version_minor, device.firmware_version_patch);
   }
 
   printf("set device id\n");
@@ -82,7 +83,7 @@ int main(int argc, char* argv[]) {
 
   auto testRequest = [&device](const char* message, uint16_t msgId) {
     printf("requesting %s\n", message);
-    if (!device.request(msgId, 4000)) {
+    if (!device.request(msgId, 1000)) {
       printf("fail\n");
       return false;
     } else {

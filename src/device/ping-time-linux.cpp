@@ -9,9 +9,9 @@ int PingTime::timeMs() {
 
   // std::chrono::duration
   auto duration    = now.time_since_epoch();
-  auto duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
+  auto durationMs = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
 
-  return duration_ms.count();
+  return durationMs.count();
 }
 
 void PingTime::microsecondDelay(unsigned int microseconds) { usleep(microseconds); }

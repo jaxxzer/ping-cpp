@@ -12,6 +12,12 @@ ping-parser.h
 ping-port.h
 -
 
+../src/device/ping-port-linux.h
+ping-port.h
+-
+cstdio
+-
+
 ../src/device/ping-port.h
 
 ../src/device/ping-time.h
@@ -46,37 +52,13 @@ ping-message.h
 ping-time.h
 -
 
-/home/jacob/git/ping-cpp/src/device/ping-device.h
-ping-parser.h
+/home/jacob/git/ping-cpp/test/test-device.cpp
+ping-device.h
 -
-ping-port.h
+ping-message-common.h
 -
-
-/home/jacob/git/ping-cpp/src/device/ping-port-linux.h
-ping-port.h
+ping-port-linux.h
 -
-cstdio
--
-
-/home/jacob/git/ping-cpp/src/message/ping-message-common.h
-ping-message.h
-/home/jacob/git/ping-cpp/src/message/ping-message.h
-
-/home/jacob/git/ping-cpp/src/message/ping-message.h
-inttypes.h
--
-stdlib.h
--
-string.h
--
-
-/home/jacob/git/ping-cpp/test/test-devvydev.cpp
 stdio.h
 -
-../src/device/ping-port-linux.h
-/home/jacob/git/ping-cpp/src/device/ping-port-linux.h
-../src/device/ping-device.h
-/home/jacob/git/ping-cpp/src/device/ping-device.h
-../src/message/ping-message-common.h
-/home/jacob/git/ping-cpp/src/message/ping-message-common.h
 
