@@ -70,10 +70,11 @@ public:
         case WAIT_LENGTH_H:
             rxBuffer_[rxCount_++] = b;
             payloadLength_ = static_cast<uint16_t>((b << 8) | payloadLength_);
-            if (payloadLength_ <= rxBufferLength_ - 8 - 2) {
+            if (payloadLength_ <= rxMessage.bufferLength() - 8 - 2) {
                 state_++;
             } else {
                 state_ = WAIT_START;
+                return ERROR;
             }
             break;
         case WAIT_MSG_ID_L: // fall-through
@@ -105,7 +106,7 @@ public:
                 return NEW_MESSAGE;
             } else {
                 errors++;
-                return ERROR;
+                return NEW_MESSAGE;
             }
         }
         return (ParseState)state_;

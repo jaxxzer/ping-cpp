@@ -73,6 +73,9 @@ public:
         if(msgDataLength() > bufferLength()) {
             return false;
         }
+        uint16_t payloadLength = payload_length();
+        uint16_t cs = checksum();
+        uint16_t calculated = calculateChecksum();
         return checksum() == calculateChecksum();
     }
 
